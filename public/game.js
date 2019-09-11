@@ -13,8 +13,8 @@ function build_board(length, mines) {
 
     for (let i = 0; i < mines; ++i) {
         while (true) {
-            let row = Math.floor(Math.random() * 10)
-            let col = Math.floor(Math.random() * 10);
+            let row = Math.floor(Math.random() * length)
+            let col = Math.floor(Math.random() * length);
 
             if (board[row][col] != '') {
                 continue;
@@ -67,9 +67,9 @@ function build_board(length, mines) {
     return board;
 }
 
-let board_model = build_board(10, 10);
+let board_model = build_board(20, 50);
 
-const board_length = 10;
+const board_length = board_model.length;
 
 let board_view = document.getElementById('board');
 
