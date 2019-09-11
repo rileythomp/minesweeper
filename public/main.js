@@ -1,9 +1,3 @@
-const board_length = 10;
-
-let board_view = document.getElementById('board');
-
-let board_model = build_board();
-
 // Build board view
 for (let i = 0; i < board_length; ++i) {
     let row = document.createElement('tr');

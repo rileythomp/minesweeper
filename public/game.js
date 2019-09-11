@@ -1,17 +1,77 @@
 function build_board(length, mines) {
-    return [
-        ['1', '', '', '', 'B', '1', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', '', ''],
-        ['', '', '', '1', '', '', '', 'B', '1', ''],
-        ['', '', 'B', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', 'B', '', '', '', ''],
-        ['1', '1', '', '', '', '1', '', '', '', ''],
-        ['', 'B', '', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '', 'B', ''],
-        ['', '', '', '', '', '', '', '', '', '1'],
-    ]
+    let board = [];
+    
+    for (let i = 0; i < length; ++i) {
+        let row = []    
+
+        for (let j = 0; j < length; ++j) {
+            row.push('');
+        }
+
+        board.push(row);
+    }
+
+    for (let i = 0; i < mines; ++i) {
+        while (true) {
+            let row = Math.floor(Math.random() * 10)
+            let col = Math.floor(Math.random() * 10);
+
+            if (board[row][col] != '') {
+                continue;
+            }
+            else {
+                board[row][col] = '💣';
+                break;
+            }
+        }
+    }
+
+    for (let i = 0; i < length; ++i) {
+        for (let j = 0; j < length; ++j) {
+
+            if (board[i][j] == '💣') {
+                continue;
+            }
+
+            let num_mines = 0;
+
+            if (i > 0 && board[i-1][j] == '💣') {
+                num_mines += 1;
+            }
+            if (i < length-1 && board[i+1][j] == '💣') {
+                num_mines += 1;
+            }
+            if (j > 0 && board[i][j-1] == '💣') {
+                num_mines += 1;
+            }
+            if (j < length-1 && board[i][j+1] == '💣') {
+                num_mines += 1;
+            }
+            if (i > 0 && j > 0 && board[i-1][j-1] == '💣') {
+                num_mines += 1;
+            }
+            if (i > 0 && j < length-1 && board[i-1][j+1] == '💣') {
+                num_mines += 1;
+            }
+            if (i < length-1 && j < length-1 && board[i+1][j+1] == '💣') {
+                num_mines += 1;
+            }
+            if (i < length-1 && j > 0 && board[i+1][j-1] == '💣') {
+                num_mines += 1;
+            }
+
+            board[i][j] = num_mines;
+        }
+    }
+
+    return board;
 }
+
+let board_model = build_board(10, 10);
+
+const board_length = 10;
+
+let board_view = document.getElementById('board');
 
 function update_cell_view(cell_view, cell_val, cell_model) {
     cell_val.innerHTML = cell_model;
@@ -19,6 +79,48 @@ function update_cell_view(cell_view, cell_val, cell_model) {
     cell_view.removeEventListener('mousedown', handle_click);
     cell_view.style.backgroundColor = 'lightgrey';
     cell_view.classList.add('revealed');
+}
+
+function reveal_cells(row, col) {
+    let cell_model = board_model[row][col];
+    let cell_view = board_view.children[row].children[col];
+    let cell_val = document.createElement('span');
+
+    if (cell_view.classList.contains('revealed')) {
+        return;
+    }
+
+    update_cell_view(cell_view, cell_val, cell_model);
+
+    if (cell_model != '') {
+        return
+    }
+    else {
+        if (row > 0) {
+            reveal_cells(row - 1, col);
+        }
+        if (row < board_length-1) {
+            reveal_cells(row + 1, col);
+        }
+        if (col > 0) {
+            reveal_cells(row, col - 1);
+        }
+        if (col < board_length-1) {
+            reveal_cells(row, col + 1);
+        }
+        if (row > 0 && col > 0) {
+            reveal_cells(row-1, col-1);
+        }
+        if (row < board_length-1 && col < board_length - 1) {
+            reveal_cells(row+1, col+1);
+        }
+        if (row > 0 && col < board_length - 1) {
+            reveal_cells(row-1, col+1);
+        }
+        if (row < board_length - 1 && col > 0) {
+            reveal_cells(row+1, col-1);
+        }
+    }
 }
 
 // cell_view is the <td></td> element
@@ -37,173 +139,9 @@ function handle_click(ev) {
     let row = Number(ev.target.parentNode.id.replace('row', ''));
     let col = Number(ev.target.id.replace('cell', ''));
 
-    let cell_model = board_model[row][col];
-    let cell_view = ev.target;
-    let cell_val = document.createElement('span');
-
-    update_cell_view(cell_view, cell_val, cell_model)
-
-    if (cell_model == '') {
-        // recurse in each direction
-
-        // up
-        let cur_row = row - 1;
-        while (cur_row >= 0) {
-            let cell_model = board_model[cur_row][col];
-            let cell_view = board_view.children[cur_row].children[col];
-            if (cell_view.classList.contains('revealed')) {
-                break;
-            }
-            let cell_val = document.createElement('span');
-
-            update_cell_view(cell_view, cell_val, cell_model)
-            
-            if (cell_model != '') {
-                break;
-            }
-
-            cur_row -= 1;
-        }
-
-        // down
-        cur_row = row + 1;
-        while (cur_row <= board_length - 1) {
-            let cell_model = board_model[cur_row][col];
-            let cell_view = board_view.children[cur_row].children[col];
-            if (cell_view.classList.contains('revealed')) {
-                break;
-            }
-            let cell_val = document.createElement('span');
-
-            update_cell_view(cell_view, cell_val, cell_model)
-
-            if (cell_model != '') {
-                break;
-            }
-
-            cur_row += 1;
-        }
-
-        // right
-        let cur_col = col + 1;
-        while (cur_col <= board_length - 1) {
-            let cell_model = board_model[row][cur_col];
-            let cell_view = board_view.children[row].children[cur_col];
-            if (cell_view.classList.contains('revealed')) {
-                break;
-            }
-            let cell_val = document.createElement('span');
-
-            update_cell_view(cell_view, cell_val, cell_model)
-
-            if (cell_model != '') {
-                break;
-            }
-
-            cur_col += 1;
-        }
-
-        // left
-        cur_col = col - 1;
-        while (cur_col >= 0) {
-            let cell_model = board_model[row][cur_col];
-            let cell_view = board_view.children[row].children[cur_col];
-            if (cell_view.classList.contains('revealed')) {
-                break;
-            }
-            let cell_val = document.createElement('span');
-
-            update_cell_view(cell_view, cell_val, cell_model)
-            
-            if (cell_model != '') {
-                break;
-            }
-
-            cur_col -= 1;
-        }
-
-        // left up
-        cur_col = col - 1;
-        cur_row = row - 1;
-        while (cur_col >= 0 && cur_row >= 0) {
-            let cell_model = board_model[cur_row][cur_col];
-            let cell_view = board_view.children[cur_row].children[cur_col];
-            if (cell_view.classList.contains('revealed')) {
-                break;
-            }
-            let cell_val = document.createElement('span');
-
-            update_cell_view(cell_view, cell_val, cell_model)
-            
-            if (cell_model != '') {
-                break;
-            }
-
-            cur_col -= 1;
-            cur_row -=1 ;
-        }
-
-        // right up
-        cur_col = col + 1;
-        cur_row = row - 1;
-        while (cur_col <= board_length - 1 && cur_row >= 0) {
-            let cell_model = board_model[cur_row][cur_col];
-            let cell_view = board_view.children[cur_row].children[cur_col];
-            if (cell_view.classList.contains('revealed')) {
-                break;
-            }
-            let cell_val = document.createElement('span');
-
-            update_cell_view(cell_view, cell_val, cell_model)
-            
-            if (cell_model != '') {
-                break;
-            }
-
-            cur_col += 1;
-            cur_row -=1 ;
-        }
-
-        // left down
-        cur_col = col - 1;
-        cur_row = row + 1;
-        while (cur_col >= 0 && cur_row <= board_length - 1) {
-            let cell_model = board_model[cur_row][cur_col];
-            let cell_view = board_view.children[cur_row].children[cur_col];
-            if (cell_view.classList.contains('revealed')) {
-                break;
-            }
-            let cell_val = document.createElement('span');
-
-            update_cell_view(cell_view, cell_val, cell_model)
-            
-            if (cell_model != '') {
-                break;
-            }
-
-            cur_col -= 1;
-            cur_row +=1 ;
-        }
-
-        // right down
-        cur_col = col + 1;
-        cur_row = row + 1;
-        while (cur_col <= board_length - 1 && cur_row <= board_length - 1) {
-            let cell_model = board_model[cur_row][cur_col];
-            let cell_view = board_view.children[cur_row].children[cur_col];
-            if (cell_view.classList.contains('revealed')) {
-                break;
-            }
-            let cell_val = document.createElement('span');
-
-            update_cell_view(cell_view, cell_val, cell_model)
-            
-            if (cell_model != '') {
-                break;
-            }
-
-            cur_col += 1;
-            cur_row +=1 ;
-        }
+    if (board_model[row][col] == '💣') {
+        console.log("you lose");
     }
+
+    reveal_cells(row, col);
 }
