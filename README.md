@@ -1,2 +1,2 @@
 # minesweeper
-💣 A minesweeper game
+💣 A minesweeper game in vanilla JS.
