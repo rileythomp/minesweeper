@@ -16,3 +16,5 @@ for (let i = 0; i < board_length; ++i) {
 }
 
 board_view.addEventListener('contextmenu', function(ev) {ev.preventDefault()})
+
+document.getElementById('give-up').addEventListener('click', give_up);
