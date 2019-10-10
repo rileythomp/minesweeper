@@ -36,8 +36,9 @@ document.getElementById('hint').addEventListener('click', (ev) => {
         let row = Math.floor(Math.random() * height)
         let col = Math.floor(Math.random() * width);
         let cell_model = board_model[row][col];
+        let cell_view = board_view.children[row].children[col];
 
-        if (cell_model != '0' && cell_model != '💣') {
+        if (cell_model != '0' && cell_model != '💣' && !cell_view.classList.contains('revealed')) {
             let cell_view = board_view.children[row].children[col];
             cell_view.classList.add('blinker');
             setTimeout(() => {
@@ -45,6 +46,15 @@ document.getElementById('hint').addEventListener('click', (ev) => {
             }, 2000)
             break;
         }
+    }
+})
+
+document.getElementById('solve').addEventListener('click', (ev) => {
+    while (true) {
+        let row = Math.floor(Math.random() * height)
+        let col = Math.floor(Math.random() * width);
+        let cell_model = board_model[row][col];
+        let cell_view = board_view.children[row].children[col];
     }
 })
 
@@ -136,6 +146,8 @@ function update_cell_view(cell_view, cell_val, cell_model) {
         button.style.display = 'inline-block';
 
         document.getElementById('give-up').style.display = 'none';
+        document.getElementById('hint').style.display = 'none';
+        document.getElementById('solve').style.display = 'none';
 
         for (let i = 0; i < height; ++i) {
             for (let j = 0; j < width; ++j) {
@@ -238,6 +250,8 @@ function give_up() {
     button.innerHTML = 'Play again';
     button.style.display = 'inline-block';
     document.getElementById('give-up').style.display = 'none';
+    document.getElementById('hint').style.display = 'none';
+    document.getElementById('solve').style.display = 'none';
 
     for (let i = 0; i < height; ++i) {
         for (let j = 0; j < width; ++j) {
@@ -271,6 +285,7 @@ function handle_click(ev) {
         timer();
         document.getElementById('give-up').style.display = 'block';
         document.getElementById('hint').style.display = 'block';
+        document.getElementById('solve').style.display = 'block';
         first_click = false;
     }
     // right mouse click
@@ -306,6 +321,8 @@ function handle_click(ev) {
         button.innerHTML = 'Play again';
         button.style.display = 'inline-block';
         document.getElementById('give-up').style.display = 'none';
+        document.getElementById('hint').style.display = 'none';
+        document.getElementById('solve').style.display = 'none';
 
         for (let i = 0; i < height; ++i) {
             for (let j = 0; j < width; ++j) {
