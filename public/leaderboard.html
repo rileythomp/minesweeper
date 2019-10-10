@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width,initial-scale=1'>
+        <title>Minesweeper</title>
+        <link rel='shortcut icon' href='bomb.png' type='image/png'>
+        <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Poppins|Rubik|Lato|Raleway' type='text/css'>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+        <link rel='stylesheet/less' type='text/css' href='styles/styles.less' />
+        <link rel='stylesheet/less' type='text/css' href='styles/leaderboard.less' />
+        <script src='js/less.min.js' ></script>
+    </head>
+    <body>
+        <h2>Minesweeper Leaderboards</h2>
+
+        <div id='select-wrapper'>
+            <select id='leaderboard-select'>
+                <option value='easy'>Easy</option>
+                <option value='intermediate'>Intermediate</option>
+                <option value='expert'>Expert</option>
+            </select>
+        </div>
+
+        <table id='leaderboard'>
+            <tr id='header-row'>
+                <td>Name</td>
+                <td>Time</td>
+                <td>Date</td>
+            </tr>
+        </table>
+        <div id='home-wrapper'>
+            <button id='home-button'><i class='fa fa-home'></i></button>
+        </div>
+    </body>
+    <script src='js/leaderboard.js'></script>
+</html>

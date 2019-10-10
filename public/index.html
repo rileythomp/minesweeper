@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width,initial-scale=1'>
         <title>Minesweeper</title>
-        <meta name="author" content="rileythomp">
-        <meta name="description" content="Minesweeper game">
-        <meta name="keywords" content="minesweeper game">
-        <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Poppins|Rubik|Lato|Raleway" type="text/css">
-        <link rel="stylesheet/less" type="text/css" href="styles.less" />
-        <script src="less.min.js" ></script>
+        <link rel='shortcut icon' href='bomb.png' type='image/png'>
+        <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Poppins|Rubik|Lato|Raleway' type='text/css'>
+        <link rel='stylesheet/less' type='text/css' href='styles/styles.less' />
+        <script src='js/less.min.js' ></script>
     </head>
     <body>
-
-        <p id="timer">00:00</p>
-        
-        <table id="board">
-
-        </table>
-
-        <p id='game-msg'></p>
-        <div id='btn-wrapper'>
-            <button id='new-game'></button>
-            <button id='give-up'>Give up</button>
+        <div id='wrapper'>
+            <h1>Minesweeper</h1>
+            <div id='start-wrapper'>
+                <select id='difficulty-select'>
+                    <option value='custom' selected>Custom</option>
+                    <option value='easy'>Easy, 9x9, 10 mines</option>
+                    <option value='intermediate'>Intermediate, 16x16, 40 mines</option>
+                    <option value='expert'>Expert, 16x30, 99 mines</option>
+                </select>
+                <input id='height' type='number' min='1' max='30' placeholder='Height'>
+                <input id='width' type='number' min='1' max='30' placeholder='Width'>
+                <input id='mines' type='number' min='1' max='899' placeholder='Mines'>
+                
+                <button id='start-button'>Start</button>
+                <button id='leaderboard-button'>Leaderboards</button>
+            </div>
         </div>
     </body>
-    <script src="game.js"></script>
-    <script src="main.js"></script>
+    <script src='js/main.js'></script>
 </html>

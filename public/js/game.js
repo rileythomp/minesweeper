@@ -1,10 +1,43 @@
-function build_board(length, mines) {
+let height = Number(localStorage.getItem('height'));
+let width = Number(localStorage.getItem('width'));
+let mines = Number(localStorage.getItem('mines'));
+
+let board_model = build_board(height, width, mines);
+
+let board_view = document.getElementById('board');
+
+let revealed_cells = 0;
+
+let has_lost = false;
+
+// Build board view
+for (let i = 0; i < height; ++i) {
+    let row = document.createElement('tr');
+    row.setAttribute('class', 'row');
+    row.setAttribute('id', 'row' + i)
+
+    for (let j = 0; j < width; ++j) {
+        let cell = document.createElement('td');
+        cell.setAttribute('class', 'cell');
+        cell.setAttribute('id', 'cell' + j);
+        cell.addEventListener('mousedown', handle_click);
+        row.appendChild(cell);
+    }
+
+    board_view.appendChild(row)
+}
+
+board_view.addEventListener('contextmenu', function(ev) {ev.preventDefault()})
+
+document.getElementById('give-up').addEventListener('click', give_up);
+
+function build_board(height, width, mines) {
     let board = [];
     
-    for (let i = 0; i < length; ++i) {
+    for (let i = 0; i < height; ++i) {
         let row = []    
 
-        for (let j = 0; j < length; ++j) {
+        for (let j = 0; j < width; ++j) {
             row.push('');
         }
 
@@ -13,8 +46,8 @@ function build_board(length, mines) {
 
     for (let i = 0; i < mines; ++i) {
         while (true) {
-            let row = Math.floor(Math.random() * length)
-            let col = Math.floor(Math.random() * length);
+            let row = Math.floor(Math.random() * height)
+            let col = Math.floor(Math.random() * width);
 
             if (board[row][col] != '') {
                 continue;
@@ -26,8 +59,8 @@ function build_board(length, mines) {
         }
     }
 
-    for (let i = 0; i < length; ++i) {
-        for (let j = 0; j < length; ++j) {
+    for (let i = 0; i < height; ++i) {
+        for (let j = 0; j < width; ++j) {
 
             if (board[i][j] == '💣') {
                 continue;
@@ -38,25 +71,25 @@ function build_board(length, mines) {
             if (i > 0 && board[i-1][j] == '💣') {
                 num_mines += 1;
             }
-            if (i < length-1 && board[i+1][j] == '💣') {
+            if (i < height-1 && board[i+1][j] == '💣') {
                 num_mines += 1;
             }
             if (j > 0 && board[i][j-1] == '💣') {
                 num_mines += 1;
             }
-            if (j < length-1 && board[i][j+1] == '💣') {
+            if (j < width-1 && board[i][j+1] == '💣') {
                 num_mines += 1;
             }
             if (i > 0 && j > 0 && board[i-1][j-1] == '💣') {
                 num_mines += 1;
             }
-            if (i > 0 && j < length-1 && board[i-1][j+1] == '💣') {
+            if (i > 0 && j < width-1 && board[i-1][j+1] == '💣') {
                 num_mines += 1;
             }
-            if (i < length-1 && j < length-1 && board[i+1][j+1] == '💣') {
+            if (i < height-1 && j < width-1 && board[i+1][j+1] == '💣') {
                 num_mines += 1;
             }
-            if (i < length-1 && j > 0 && board[i+1][j-1] == '💣') {
+            if (i < height-1 && j > 0 && board[i+1][j-1] == '💣') {
                 num_mines += 1;
             }
 
@@ -67,15 +100,6 @@ function build_board(length, mines) {
     return board;
 }
 
-const board_length = 20;
-const mines = 69;
-
-let board_model = build_board(board_length, mines);
-
-let board_view = document.getElementById('board');
-
-let revealed_cells = 0;
-
 function update_cell_view(cell_view, cell_val, cell_model) {
     cell_val.innerHTML = cell_model;
     if (cell_view.children.length > 0 && cell_view.children[0].innerHTML == '🚩') {
@@ -85,9 +109,7 @@ function update_cell_view(cell_view, cell_val, cell_model) {
     cell_view.style.backgroundColor = '#4C566A';
     cell_view.classList.add('revealed');
 
-    revealed_cells += 1;
-
-    if (revealed_cells == board_length*board_length - mines) {
+    if (!has_lost && revealed_cells == height*width - mines) {
         let msg = document.getElementById('game-msg');
         msg.innerHTML = 'You won';
         clearTimeout(t);
@@ -96,8 +118,10 @@ function update_cell_view(cell_view, cell_val, cell_model) {
         button.innerHTML = 'Play again';
         button.style.display = 'inline-block';
 
-        for (let i = 0; i < board_length; ++i) {
-            for (let j = 0; j < board_length; ++j) {
+        document.getElementById('give-up').style.display = 'none';
+
+        for (let i = 0; i < height; ++i) {
+            for (let j = 0; j < width; ++j) {
                 let cell = board_view.children[i].children[j];
                 cell.removeEventListener('mousedown', handle_click);
             }
@@ -116,6 +140,8 @@ function reveal_cells(row, col) {
         return;
     }
 
+    revealed_cells += 1;
+
     update_cell_view(cell_view, cell_val, cell_model);
 
     if (cell_model != '') {
@@ -125,33 +151,33 @@ function reveal_cells(row, col) {
         if (row > 0) {
             reveal_cells(row - 1, col);
         }
-        if (row < board_length-1) {
+        if (row < height-1) {
             reveal_cells(row + 1, col);
         }
         if (col > 0) {
             reveal_cells(row, col - 1);
         }
-        if (col < board_length-1) {
+        if (col < width-1) {
             reveal_cells(row, col + 1);
         }
         if (row > 0 && col > 0) {
             reveal_cells(row-1, col-1);
         }
-        if (row < board_length-1 && col < board_length - 1) {
+        if (row < height-1 && col < width - 1) {
             reveal_cells(row+1, col+1);
         }
-        if (row > 0 && col < board_length - 1) {
+        if (row > 0 && col < width - 1) {
             reveal_cells(row-1, col+1);
         }
-        if (row < board_length - 1 && col > 0) {
+        if (row < height - 1 && col > 0) {
             reveal_cells(row+1, col-1);
         }
     }
 }
 
 function reset_cells() {
-    for (let i = 0; i < board_length; ++i) {
-        for (let j = 0; j < board_length; ++j) {
+    for (let i = 0; i < height; ++i) {
+        for (let j = 0; j < width; ++j) {
             let cell = board_view.children[i].children[j];
 
             if (cell.children.length != 0) {
@@ -168,13 +194,15 @@ function reset_cells() {
 }
 
 function restart_game() {
+    has_lost = false;
+    revealed_cells = 0;
     let msg = document.getElementById('game-msg');
     msg.innerHTML = '';
 
     let button = document.getElementById('new-game');
     button.style.display = 'none';
 
-    board_model = build_board(board_length, mines);
+    board_model = build_board(height, width, mines);
     reset_cells();
 
     seconds = 0;
@@ -184,6 +212,7 @@ function restart_game() {
 }
 
 function give_up() {
+    has_lost = true;
     let msg = document.getElementById('game-msg');
     msg.innerHTML = 'You lost';
     clearTimeout(t);
@@ -193,8 +222,8 @@ function give_up() {
     button.style.display = 'inline-block';
     document.getElementById('give-up').style.display = 'none';
 
-    for (let i = 0; i < board_length; ++i) {
-        for (let j = 0; j < board_length; ++j) {
+    for (let i = 0; i < height; ++i) {
+        for (let j = 0; j < width; ++j) {
             let cell_view = board_view.children[i].children[j];
             let cell_model = board_model[i][j];
             let cell_val = document.createElement('span');
@@ -250,6 +279,7 @@ function handle_click(ev) {
     let col = Number(ev.target.id.replace('cell', ''));
 
     if (board_model[row][col] == '💣') {
+        has_lost = true;
         let msg = document.getElementById('game-msg');
         msg.innerHTML = 'You lost';
         clearTimeout(t);
@@ -259,8 +289,8 @@ function handle_click(ev) {
         button.style.display = 'inline-block';
         document.getElementById('give-up').style.display = 'none';
 
-        for (let i = 0; i < board_length; ++i) {
-            for (let j = 0; j < board_length; ++j) {
+        for (let i = 0; i < height; ++i) {
+            for (let j = 0; j < width; ++j) {
                 let cell_view = board_view.children[i].children[j];
                 let cell_model = board_model[i][j];
                 let cell_val = document.createElement('span');
@@ -271,7 +301,7 @@ function handle_click(ev) {
                 }
 
                 if (!cell_view.classList.contains('revealed')) {
-                    update_cell_view(cell_view, cell_val, cell_model);;
+                    update_cell_view(cell_view, cell_val, cell_model);
                 }
             
                 cell_view.removeEventListener('mousedown', handle_click);
@@ -309,3 +339,7 @@ function add_time() {
 
     timer();
 }
+
+document.getElementById('home-button').addEventListener('click', (ev) => {
+    location = '/';
+})
