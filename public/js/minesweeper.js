@@ -31,6 +31,23 @@ board_view.addEventListener('contextmenu', function(ev) {ev.preventDefault()})
 
 document.getElementById('give-up').addEventListener('click', give_up);
 
+document.getElementById('hint').addEventListener('click', (ev) => {
+    while (true) {
+        let row = Math.floor(Math.random() * height)
+        let col = Math.floor(Math.random() * width);
+        let cell_model = board_model[row][col];
+
+        if (cell_model != '0' && cell_model != '💣') {
+            let cell_view = board_view.children[row].children[col];
+            cell_view.classList.add('blinker');
+            setTimeout(() => {
+                cell_view.classList.remove('blinker');
+            }, 2000)
+            break;
+        }
+    }
+})
+
 function build_board(height, width, mines) {
     let board = [];
     
@@ -252,7 +269,8 @@ let first_click = true;
 function handle_click(ev) {
     if (first_click) {
         timer();
-        document.getElementById('give-up').style.display = 'inline-block';
+        document.getElementById('give-up').style.display = 'block';
+        document.getElementById('hint').style.display = 'block';
         first_click = false;
     }
     // right mouse click

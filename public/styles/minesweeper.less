@@ -28,9 +28,21 @@ table {
 
 #btn-wrapper button {
     display: none;
+    margin: 0.75em auto;
+    width: 6em;
 }
 
 #home-button {
     display: block !important;
     margin: 0.5em auto;
 }
+
+.blinker {
+    animation: blinker 1s linear infinite;
+  }
+
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
