@@ -20,6 +20,7 @@ for (let i = 0; i < height; ++i) {
         let cell = document.createElement('td');
         cell.setAttribute('class', 'cell');
         cell.setAttribute('id', 'cell' + j);
+        cell.classList.add('unrevealed');
         cell.addEventListener('mousedown', handle_click);
         row.appendChild(cell);
     }
@@ -49,12 +50,203 @@ document.getElementById('hint').addEventListener('click', (ev) => {
     }
 })
 
+function count_surrounding_class(row, col, class_name) {
+    let count = 0;
+    if (row > 0 && board_view.children[row-1].children[col].classList.contains(class_name)) {
+        count += 1;
+    }
+    if (row < height-1 && board_view.children[row+1].children[col].classList.contains(class_name)) {
+        count += 1;
+    }
+    if (col > 0 && board_view.children[row].children[col-1].classList.contains(class_name)) {
+        count += 1;
+    }
+    if (col < width-1 && board_view.children[row].children[col+1].classList.contains(class_name)) {
+        count += 1;
+    }
+    if (row > 0 && col > 0 && board_view.children[row-1].children[col-1].classList.contains(class_name)) {
+        count += 1;
+    }
+    if (row < height-1 && col < width - 1 && board_view.children[row+1].children[col+1].classList.contains(class_name)) {
+        count += 1;
+    }
+    if (row > 0 && col < width - 1 && board_view.children[row-1].children[col+1].classList.contains(class_name)) {
+        count += 1;
+    }
+    if (row < height - 1 && col > 0 && board_view.children[row+1].children[col-1].classList.contains(class_name)) {
+        count += 1;
+    }
+    return count;
+}
+
+function click_surrounding_unrevealed(row, col, class_name) {
+    if (row > 0 && board_view.children[row-1].children[col].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row-1].children[col];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                cell_view.dispatchEvent(new Event('mousedown')); 
+            }, 1000)
+        }
+    }
+    if (row < height-1 && board_view.children[row+1].children[col].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row+1].children[col];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                cell_view.dispatchEvent(new Event('mousedown')); 
+            }, 1000)
+        }
+    }
+    if (col > 0 && board_view.children[row].children[col-1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row].children[col-1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                cell_view.dispatchEvent(new Event('mousedown')); 
+            }, 1000)
+        }
+    }
+    if (col < width-1 && board_view.children[row].children[col+1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row].children[col+1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                cell_view.dispatchEvent(new Event('mousedown')); 
+            }, 1000)
+        }
+    }
+    if (row > 0 && col > 0 && board_view.children[row-1].children[col-1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row-1].children[col-1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                cell_view.dispatchEvent(new Event('mousedown')); 
+            }, 1000)
+        }
+    }
+    if (row < height-1 && col < width - 1 && board_view.children[row+1].children[col+1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row+1].children[col+1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                cell_view.dispatchEvent(new Event('mousedown')); 
+            }, 1000)
+        }
+    }
+    if (row > 0 && col < width - 1 && board_view.children[row-1].children[col+1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row-1].children[col+1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                cell_view.dispatchEvent(new Event('mousedown')); 
+            }, 1000)
+        }
+    }
+    if (row < height - 1 && col > 0 && board_view.children[row+1].children[col-1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row+1].children[col-1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                cell_view.dispatchEvent(new Event('mousedown')); 
+            }, 1000)
+        }
+    }
+}
+
+function flag_surrounding_unrevealed(row, col, class_name) {
+    if (row > 0 && board_view.children[row-1].children[col].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row-1].children[col];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                let mousedown = new Event('mousedown');
+                mousedown.which = 3;
+                cell_view.dispatchEvent(mousedown);
+            }, 1000)
+        }
+    }
+    if (row < height-1 && board_view.children[row+1].children[col].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row+1].children[col];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                let mousedown = new Event('mousedown');
+                mousedown.which = 3;
+                cell_view.dispatchEvent(mousedown);
+            }, 1000)
+        }
+    }
+    if (col > 0 && board_view.children[row].children[col-1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row].children[col-1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                let mousedown = new Event('mousedown');
+                mousedown.which = 3;
+                cell_view.dispatchEvent(mousedown);
+            }, 1000)
+        }
+    }
+    if (col < width-1 && board_view.children[row].children[col+1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row].children[col+1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                let mousedown = new Event('mousedown');
+                mousedown.which = 3;
+                cell_view.dispatchEvent(mousedown);
+            }, 1000)
+        }
+    }
+    if (row > 0 && col > 0 && board_view.children[row-1].children[col-1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row-1].children[col-1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                let mousedown = new Event('mousedown');
+                mousedown.which = 3;
+                cell_view.dispatchEvent(mousedown);
+            }, 1000)
+        }
+    }
+    if (row < height-1 && col < width - 1 && board_view.children[row+1].children[col+1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row+1].children[col+1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                let mousedown = new Event('mousedown');
+                mousedown.which = 3;
+                cell_view.dispatchEvent(mousedown);
+            }, 1000)
+        }
+    }
+    if (row > 0 && col < width - 1 && board_view.children[row-1].children[col+1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row-1].children[col+1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                let mousedown = new Event('mousedown');
+                mousedown.which = 3;
+                cell_view.dispatchEvent(mousedown);
+            }, 1000)
+        }
+    }
+    if (row < height - 1 && col > 0 && board_view.children[row+1].children[col-1].classList.contains(class_name)) {
+        let cell_view =  board_view.children[row+1].children[col-1];
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            setTimeout(() => {
+                let mousedown = new Event('mousedown');
+                mousedown.which = 3;
+                cell_view.dispatchEvent(mousedown);
+            }, 1000)
+        }
+    }
+}
+
 document.getElementById('solve').addEventListener('click', (ev) => {
-    while (true) {
-        let row = Math.floor(Math.random() * height)
-        let col = Math.floor(Math.random() * width);
-        let cell_model = board_model[row][col];
-        let cell_view = board_view.children[row].children[col];
+    for (let row = 0; row < height; ++row) {
+        for (let col = 0; col < width; ++col) {
+            let cell_view = board_view.children[row].children[col];
+
+            if (cell_view.classList.contains('revealed') && cell_view.children[0].innerHTML != '0') {
+                let flags = count_surrounding_class(row, col, 'flagged');
+                let unrevealed = count_surrounding_class(row, col, 'unrevealed'); //8 - flags - count_surrounding_class(row, col, 'revealed');
+                let cell_val = Number(cell_view.children[0].innerHTML);
+
+                if (flags + unrevealed == cell_val) {
+                    flag_surrounding_unrevealed(row, col, 'unrevealed');
+                }
+                else if (flags == cell_val) {
+                    click_surrounding_unrevealed(row, col, 'unrevealed');                    
+                }
+            }
+        }
     }
 })
 
@@ -135,6 +327,7 @@ function update_cell_view(cell_view, cell_val, cell_model) {
     cell_view.appendChild(cell_val);
     cell_view.style.backgroundColor = '#4C566A';
     cell_view.classList.add('revealed');
+    cell_view.classList.remove('unrevealed');
 
     if (!has_lost && revealed_cells == height*width - mines) {
         let msg = document.getElementById('game-msg');
@@ -217,6 +410,7 @@ function reset_cells() {
             cell.innerHTML = '';
             cell.style.backgroundColor = '#3B4252';
             cell.classList.remove('revealed');
+            cell.classList.add('unrevealed');
             cell.addEventListener('mousedown', handle_click);
         }
     }
@@ -298,7 +492,9 @@ function handle_click(ev) {
         if (target.children.length == 0) {
             let flag = document.createElement('span');
             flag.innerHTML = '🚩';
-            ev.target.appendChild(flag);
+            target.classList.add('flagged');
+            target.classList.remove('unrevealed');
+            target.appendChild(flag);
         }
         else if (target.children[0].innerHTML == '🚩') {
             let flag = target.children[0];
