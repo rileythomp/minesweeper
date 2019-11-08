@@ -19,6 +19,9 @@ function start_game() {
     let width;
     let mines;
 
+    const max_height = 30;
+    const max_width = 30;
+
     switch (level) {
         case 'custom':
             height = document.getElementById('height').value;
@@ -42,11 +45,15 @@ function start_game() {
             break;
     }
 
-    if (height < 1 || height > 30 || height == '') {
+    if (height < 1 || height == '') {
         height = 9;
+    } else if (height > 30) {
+        height = max_height;
     }
-    if (width < 1 || width > 30 || width == '') {
+    if (width < 1 || width == '') {
         width = 9;
+    } else if (width > max_width) {
+        width = max_width
     }
     if (mines < 0 || mines > height * width || mines == '') {
         mines = Math.floor(0.1 * height * width);

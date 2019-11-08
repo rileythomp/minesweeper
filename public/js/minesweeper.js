@@ -80,174 +80,205 @@ function count_surrounding_class(row, col, class_name) {
 }
 
 function click_surrounding_unrevealed(row, col, class_name) {
+    let reveal_coords = [];
     if (row > 0 && board_view.children[row-1].children[col].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                cell_view.dispatchEvent(new Event('mousedown')); 
-            }, 1000)
+            // cell_view.dispatchEvent(new Event('mousedown')); 
+            reveal_coords.push({row: row - 1, col: col, flag: false});
         }
     }
     if (row < height-1 && board_view.children[row+1].children[col].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                cell_view.dispatchEvent(new Event('mousedown')); 
-            }, 1000)
+            // cell_view.dispatchEvent(new Event('mousedown')); 
+            reveal_coords.push({row: row + 1, col: col, flag: false});
         }
     }
     if (col > 0 && board_view.children[row].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                cell_view.dispatchEvent(new Event('mousedown')); 
-            }, 1000)
+            // cell_view.dispatchEvent(new Event('mousedown')); 
+            reveal_coords.push({row: row, col: col - 1, flag: false});
         }
     }
     if (col < width-1 && board_view.children[row].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                cell_view.dispatchEvent(new Event('mousedown')); 
-            }, 1000)
+            // cell_view.dispatchEvent(new Event('mousedown')); 
+            reveal_coords.push({row: row, col: col + 1, flag: false});
         }
     }
     if (row > 0 && col > 0 && board_view.children[row-1].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                cell_view.dispatchEvent(new Event('mousedown')); 
-            }, 1000)
+            // cell_view.dispatchEvent(new Event('mousedown')); 
+            reveal_coords.push({row: row - 1, col: col - 1, flag: false});
         }
     }
     if (row < height-1 && col < width - 1 && board_view.children[row+1].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                cell_view.dispatchEvent(new Event('mousedown')); 
-            }, 1000)
+            // cell_view.dispatchEvent(new Event('mousedown')); 
+            reveal_coords.push({row: row + 1, col: col + 1, flag: false});
         }
     }
     if (row > 0 && col < width - 1 && board_view.children[row-1].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                cell_view.dispatchEvent(new Event('mousedown')); 
-            }, 1000)
+            // cell_view.dispatchEvent(new Event('mousedown')); 
+            reveal_coords.push({row: row - 1, col: col + 1, flag: false});
         }
     }
     if (row < height - 1 && col > 0 && board_view.children[row+1].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                cell_view.dispatchEvent(new Event('mousedown')); 
-            }, 1000)
+            // cell_view.dispatchEvent(new Event('mousedown')); 
+            reveal_coords.push({row: row + 1, col: col - 1, flag: false});
         }
     }
+    return reveal_coords;
 }
 
 function flag_surrounding_unrevealed(row, col, class_name) {
+    let flag_coords = [];
     if (row > 0 && board_view.children[row-1].children[col].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                let mousedown = new Event('mousedown');
-                mousedown.which = 3;
-                cell_view.dispatchEvent(mousedown);
-            }, 1000)
+            // let mousedown = new Event('mousedown');
+            // mousedown.which = 3;
+            // cell_view.dispatchEvent(mousedown);
+            flag_coords.push({row: row - 1, col: col, flag: true});
         }
     }
     if (row < height-1 && board_view.children[row+1].children[col].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                let mousedown = new Event('mousedown');
-                mousedown.which = 3;
-                cell_view.dispatchEvent(mousedown);
-            }, 1000)
+            // let mousedown = new Event('mousedown');
+            // mousedown.which = 3;
+            flag_coords.push({row: row + 1, col: col, flag: true});
+            // cell_view.dispatchEvent(mousedown);
         }
     }
     if (col > 0 && board_view.children[row].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                let mousedown = new Event('mousedown');
-                mousedown.which = 3;
-                cell_view.dispatchEvent(mousedown);
-            }, 1000)
+            // let mousedown = new Event('mousedown');
+            // mousedown.which = 3;
+            // cell_view.dispatchEvent(mousedown);
+            flag_coords.push({row: row, col: col - 1, flag: true});
+
         }
     }
     if (col < width-1 && board_view.children[row].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                let mousedown = new Event('mousedown');
-                mousedown.which = 3;
-                cell_view.dispatchEvent(mousedown);
-            }, 1000)
+            // let mousedown = new Event('mousedown');
+            // mousedown.which = 3;
+            // cell_view.dispatchEvent(mousedown);
+            flag_coords.push({row: row, col: col + 1, flag: true});
+
         }
     }
     if (row > 0 && col > 0 && board_view.children[row-1].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                let mousedown = new Event('mousedown');
-                mousedown.which = 3;
-                cell_view.dispatchEvent(mousedown);
-            }, 1000)
+            // let mousedown = new Event('mousedown');
+            // mousedown.which = 3;
+            // cell_view.dispatchEvent(mousedown);
+            flag_coords.push({row: row - 1, col: col - 1, flag: true});
         }
     }
     if (row < height-1 && col < width - 1 && board_view.children[row+1].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                let mousedown = new Event('mousedown');
-                mousedown.which = 3;
-                cell_view.dispatchEvent(mousedown);
-            }, 1000)
+            // let mousedown = new Event('mousedown');
+            // mousedown.which = 3;
+            // cell_view.dispatchEvent(mousedown);
+            flag_coords.push({row: row + 1, col: col + 1, flag: true});
         }
     }
     if (row > 0 && col < width - 1 && board_view.children[row-1].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                let mousedown = new Event('mousedown');
-                mousedown.which = 3;
-                cell_view.dispatchEvent(mousedown);
-            }, 1000)
+            // let mousedown = new Event('mousedown');
+            // mousedown.which = 3;
+            // cell_view.dispatchEvent(mousedown);
+            flag_coords.push({row: row - 1, col: col + 1, flag: true});
         }
     }
     if (row < height - 1 && col > 0 && board_view.children[row+1].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            setTimeout(() => {
-                let mousedown = new Event('mousedown');
-                mousedown.which = 3;
-                cell_view.dispatchEvent(mousedown);
-            }, 1000)
+            // let mousedown = new Event('mousedown');
+            // mousedown.which = 3;
+            // cell_view.dispatchEvent(mousedown);
+            flag_coords.push({row: row + 1, col: col - 1, flag: true});
         }
     }
+    return flag_coords;
 }
 
 document.getElementById('solve').addEventListener('click', (ev) => {
-    for (let row = 0; row < height; ++row) {
-        for (let col = 0; col < width; ++col) {
-            let cell_view = board_view.children[row].children[col];
+    let clicked_last_scan = true;
+    let click_coords = [];
 
-            if (cell_view.classList.contains('revealed') && cell_view.children[0].innerHTML != '0') {
-                let flags = count_surrounding_class(row, col, 'flagged');
-                let unrevealed = count_surrounding_class(row, col, 'unrevealed'); //8 - flags - count_surrounding_class(row, col, 'revealed');
-                let cell_val = Number(cell_view.children[0].innerHTML);
-
-                if (flags + unrevealed == cell_val) {
-                    flag_surrounding_unrevealed(row, col, 'unrevealed');
+    while (clicked_last_scan) {
+        clicked_last_scan = false;
+        for (let row = 0; row < height; ++row) {
+            for (let col = 0; col < width; ++col) {
+                let cell_view = board_view.children[row].children[col];
+    
+                if (cell_view.classList.contains('revealed') && cell_view.children[0].innerHTML != '0') {
+                    let flags = count_surrounding_class(row, col, 'flagged');
+                    let unrevealed = count_surrounding_class(row, col, 'unrevealed'); //8 - flags - count_surrounding_class(row, col, 'revealed');
+                    let cell_val = Number(cell_view.children[0].innerHTML);
+    
+                    if (flags + unrevealed == cell_val && unrevealed != 0) {
+                        click_coords = click_coords.concat(flag_surrounding_unrevealed(row, col, 'unrevealed'));
+                        // clicked_last_scan = true;
+                    }
+                    else if (flags == cell_val && unrevealed != 0) {
+                        click_coords = click_coords.concat(click_surrounding_unrevealed(row, col, 'unrevealed'));   
+                        // clicked_last_scan = true;                 
+                    }
                 }
-                else if (flags == cell_val) {
-                    click_surrounding_unrevealed(row, col, 'unrevealed');                    
-                }
+    
             }
         }
+
+        if (!clicked_last_scan) {
+            break;
+        }
     }
+
+    let index = 0;
+    let clickint = setInterval(function() {
+        if (index > click_coords.length - 1) {
+            alert(1);
+            clearInterval(clickint);
+        }
+        let coord = click_coords[index];
+        let mousedown = new Event('mousedown');
+        if (coord.flag) {
+            mousedown.which = 3;
+        }
+        let cell_view = board_view.children[coord.row].children[coord.col];
+        cell_view.dispatchEvent(mousedown);
+        index += 1;
+    }, 100)
+
+    // for (let i = 0; i < click_coords.length; ++i) {
+    //     let coord = click_coords[i];
+    //     setTimeout(function(coord) {
+    //         let mousedown = new Event('mousedown');
+    //         if (coord.flag) {
+    //             mousedown.which = 3;
+    //         }
+    //         let cell_view = board_view.children[coord.row].children[coord.col];
+    //         cell_view.dispatchEvent(mousedown);
+    //     }, 1000, coord)
+    // }
 })
 
 function build_board(height, width, mines) {
@@ -410,6 +441,7 @@ function reset_cells() {
             cell.innerHTML = '';
             cell.style.backgroundColor = '#3B4252';
             cell.classList.remove('revealed');
+            cell.classList.remove('flagged');
             cell.classList.add('unrevealed');
             cell.addEventListener('mousedown', handle_click);
         }
@@ -419,11 +451,8 @@ function reset_cells() {
 function restart_game() {
     has_lost = false;
     revealed_cells = 0;
-    let msg = document.getElementById('game-msg');
-    msg.innerHTML = '';
-
-    let button = document.getElementById('new-game');
-    button.style.display = 'none';
+    document.getElementById('game-msg').innerHTML = '';
+    document.getElementById('new-game').style.display = 'none';
 
     board_model = build_board(height, width, mines);
     reset_cells();
