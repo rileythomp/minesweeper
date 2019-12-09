@@ -12,6 +12,10 @@ document.getElementById('leaderboard-button').addEventListener('click', (ev) => 
     location = '/leaderboard.html'
 })
 
+document.getElementById('instructions-button').addEventListener('click', (ev) => {
+    location = '/instructions.html'
+})
+
 function start_game() {
     let level = document.getElementById('difficulty-select').value;
 

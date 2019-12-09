@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width,initial-scale=1'>
+        <title>Minesweeper</title>
+        <link rel='shortcut icon' href='bomb.png' type='image/png'>
+        <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Poppins|Rubik|Lato|Raleway' type='text/css'>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+        <link rel='stylesheet/less' type='text/css' href='styles/styles.less' />
+        <link rel='stylesheet/less' type='text/css' href='styles/instructions.less' />
+
+        <script src='js/less.min.js' ></script>
+    </head>
+    <body>
+        <h1>Minesweeper</h1>
+        <ul>
+            <li>Your goal is to clear all of the safe reveal every square without clicking on a mine.</li>
+            <li>When you click on a square, it will reveal the number of mines surrounding it.</li>
+            <li>If there are no mines surroudning that square, it will reveal all the squares around it recursively.</li>
+            <li>Using the number of mines surrounding a cell, you can deduce which cells are safe to click on.</li>
+            <li>You can mark a cell with a mine on it by right clicking, and unflag the cell by right clicking again.</li>
+            <li>You can click hint which will show a square that does not have a mine in it.</li>
+            <li>Solve will help partially solve the game from its current state.</li>
+        </ul>
+        <div id='home-wrapper'>
+            <button id='home-button'><i class='fa fa-home'></i></button>
+        </div>
+    </body>
+    <script src='js/instructions.js'></script>
+</html>

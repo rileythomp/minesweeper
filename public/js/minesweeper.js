@@ -10,7 +10,6 @@ let revealed_cells = 0;
 
 let has_lost = false;
 
-// Build board view
 for (let i = 0; i < height; ++i) {
     let row = document.createElement('tr');
     row.setAttribute('class', 'row');
@@ -39,7 +38,7 @@ document.getElementById('hint').addEventListener('click', (ev) => {
         let cell_model = board_model[row][col];
         let cell_view = board_view.children[row].children[col];
 
-        if (cell_model != '0' && cell_model != '💣' && !cell_view.classList.contains('revealed')) {
+        if (cell_model != ' ' && cell_model != '💣' && !cell_view.classList.contains('revealed')) {
             let cell_view = board_view.children[row].children[col];
             cell_view.classList.add('blinker');
             setTimeout(() => {
@@ -84,56 +83,48 @@ function click_surrounding_unrevealed(row, col, class_name) {
     if (row > 0 && board_view.children[row-1].children[col].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // cell_view.dispatchEvent(new Event('mousedown')); 
             reveal_coords.push({row: row - 1, col: col, flag: false});
         }
     }
     if (row < height-1 && board_view.children[row+1].children[col].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // cell_view.dispatchEvent(new Event('mousedown')); 
             reveal_coords.push({row: row + 1, col: col, flag: false});
         }
     }
     if (col > 0 && board_view.children[row].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // cell_view.dispatchEvent(new Event('mousedown')); 
             reveal_coords.push({row: row, col: col - 1, flag: false});
         }
     }
     if (col < width-1 && board_view.children[row].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // cell_view.dispatchEvent(new Event('mousedown')); 
             reveal_coords.push({row: row, col: col + 1, flag: false});
         }
     }
     if (row > 0 && col > 0 && board_view.children[row-1].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // cell_view.dispatchEvent(new Event('mousedown')); 
             reveal_coords.push({row: row - 1, col: col - 1, flag: false});
         }
     }
     if (row < height-1 && col < width - 1 && board_view.children[row+1].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // cell_view.dispatchEvent(new Event('mousedown')); 
             reveal_coords.push({row: row + 1, col: col + 1, flag: false});
         }
     }
     if (row > 0 && col < width - 1 && board_view.children[row-1].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // cell_view.dispatchEvent(new Event('mousedown')); 
             reveal_coords.push({row: row - 1, col: col + 1, flag: false});
         }
     }
     if (row < height - 1 && col > 0 && board_view.children[row+1].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // cell_view.dispatchEvent(new Event('mousedown')); 
             reveal_coords.push({row: row + 1, col: col - 1, flag: false});
         }
     }
@@ -145,27 +136,18 @@ function flag_surrounding_unrevealed(row, col, class_name) {
     if (row > 0 && board_view.children[row-1].children[col].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // let mousedown = new Event('mousedown');
-            // mousedown.which = 3;
-            // cell_view.dispatchEvent(mousedown);
             flag_coords.push({row: row - 1, col: col, flag: true});
         }
     }
     if (row < height-1 && board_view.children[row+1].children[col].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // let mousedown = new Event('mousedown');
-            // mousedown.which = 3;
             flag_coords.push({row: row + 1, col: col, flag: true});
-            // cell_view.dispatchEvent(mousedown);
         }
     }
     if (col > 0 && board_view.children[row].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // let mousedown = new Event('mousedown');
-            // mousedown.which = 3;
-            // cell_view.dispatchEvent(mousedown);
             flag_coords.push({row: row, col: col - 1, flag: true});
 
         }
@@ -173,9 +155,6 @@ function flag_surrounding_unrevealed(row, col, class_name) {
     if (col < width-1 && board_view.children[row].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // let mousedown = new Event('mousedown');
-            // mousedown.which = 3;
-            // cell_view.dispatchEvent(mousedown);
             flag_coords.push({row: row, col: col + 1, flag: true});
 
         }
@@ -183,36 +162,24 @@ function flag_surrounding_unrevealed(row, col, class_name) {
     if (row > 0 && col > 0 && board_view.children[row-1].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // let mousedown = new Event('mousedown');
-            // mousedown.which = 3;
-            // cell_view.dispatchEvent(mousedown);
             flag_coords.push({row: row - 1, col: col - 1, flag: true});
         }
     }
     if (row < height-1 && col < width - 1 && board_view.children[row+1].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // let mousedown = new Event('mousedown');
-            // mousedown.which = 3;
-            // cell_view.dispatchEvent(mousedown);
             flag_coords.push({row: row + 1, col: col + 1, flag: true});
         }
     }
     if (row > 0 && col < width - 1 && board_view.children[row-1].children[col+1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row-1].children[col+1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // let mousedown = new Event('mousedown');
-            // mousedown.which = 3;
-            // cell_view.dispatchEvent(mousedown);
             flag_coords.push({row: row - 1, col: col + 1, flag: true});
         }
     }
     if (row < height - 1 && col > 0 && board_view.children[row+1].children[col-1].classList.contains(class_name)) {
         let cell_view =  board_view.children[row+1].children[col-1];
         if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
-            // let mousedown = new Event('mousedown');
-            // mousedown.which = 3;
-            // cell_view.dispatchEvent(mousedown);
             flag_coords.push({row: row + 1, col: col - 1, flag: true});
         }
     }
@@ -229,18 +196,16 @@ document.getElementById('solve').addEventListener('click', (ev) => {
             for (let col = 0; col < width; ++col) {
                 let cell_view = board_view.children[row].children[col];
     
-                if (cell_view.classList.contains('revealed') && cell_view.children[0].innerHTML != '0') {
+                if (cell_view.classList.contains('revealed') && cell_view.children[0].innerHTML != ' ') {
                     let flags = count_surrounding_class(row, col, 'flagged');
                     let unrevealed = count_surrounding_class(row, col, 'unrevealed'); //8 - flags - count_surrounding_class(row, col, 'revealed');
                     let cell_val = Number(cell_view.children[0].innerHTML);
     
                     if (flags + unrevealed == cell_val && unrevealed != 0) {
                         click_coords = click_coords.concat(flag_surrounding_unrevealed(row, col, 'unrevealed'));
-                        // clicked_last_scan = true;
                     }
                     else if (flags == cell_val && unrevealed != 0) {
                         click_coords = click_coords.concat(click_surrounding_unrevealed(row, col, 'unrevealed'));   
-                        // clicked_last_scan = true;                 
                     }
                 }
     
@@ -251,12 +216,11 @@ document.getElementById('solve').addEventListener('click', (ev) => {
             break;
         }
     }
-
     let index = 0;
     let clickint = setInterval(function() {
-        if (index > click_coords.length - 1) {
-            alert(1);
+        if (index >= click_coords.length) {
             clearInterval(clickint);
+            return;
         }
         let coord = click_coords[index];
         let mousedown = new Event('mousedown');
@@ -264,21 +228,12 @@ document.getElementById('solve').addEventListener('click', (ev) => {
             mousedown.which = 3;
         }
         let cell_view = board_view.children[coord.row].children[coord.col];
-        cell_view.dispatchEvent(mousedown);
+        if (!cell_view.classList.contains('revealed') && !cell_view.classList.contains('flagged')) {
+            cell_view.dispatchEvent(mousedown);
+            clicked = true;
+        }
         index += 1;
     }, 100)
-
-    // for (let i = 0; i < click_coords.length; ++i) {
-    //     let coord = click_coords[i];
-    //     setTimeout(function(coord) {
-    //         let mousedown = new Event('mousedown');
-    //         if (coord.flag) {
-    //             mousedown.which = 3;
-    //         }
-    //         let cell_view = board_view.children[coord.row].children[coord.col];
-    //         cell_view.dispatchEvent(mousedown);
-    //     }, 1000, coord)
-    // }
 })
 
 function build_board(height, width, mines) {
@@ -351,7 +306,7 @@ function build_board(height, width, mines) {
 }
 
 function update_cell_view(cell_view, cell_val, cell_model) {
-    cell_val.innerHTML = cell_model;
+    cell_val.innerHTML = (cell_model == 0 ? ' ' : cell_model);
     if (cell_view.children.length > 0 && cell_view.children[0].innerHTML == '🚩') {
         cell_view.removeChild(cell_view.children[0]);
     }
@@ -380,8 +335,14 @@ function update_cell_view(cell_view, cell_val, cell_model) {
             }
         }
 
+        add_to_leaderboard();
+
         button.addEventListener('click', restart_game);
     }
+}
+
+function add_to_leaderboard() {
+    
 }
 
 function reveal_cells(row, col) {
