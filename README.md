@@ -1,5 +1,7 @@
 # minesweeper
 
+https://mine-sweeper-js.herokuapp.com/
+
 A minesweeper game with default and custom difficulty levels.
 
 Has a hint button that reveals a non-mine square with at least one mine surrounding it.
