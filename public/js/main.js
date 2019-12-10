@@ -8,10 +8,6 @@ document.addEventListener('keypress', (ev) => {
     }
 })
 
-document.getElementById('leaderboard-button').addEventListener('click', (ev) => {
-    location = '/leaderboard.html'
-})
-
 document.getElementById('instructions-button').addEventListener('click', (ev) => {
     location = '/instructions.html'
 })

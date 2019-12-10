@@ -37,6 +37,29 @@ table {
     margin: 0.5em auto;
 }
 
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: #ECEFF4;
+    color: #434C5E;
+    margin-left: 1em;
+    padding: 1em;
+    width: 10em;
+    font-family: Lato;
+    border: 1px solid #434C5E;
+
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
 .blinker {
     animation: blinker 1s linear infinite;
   }
